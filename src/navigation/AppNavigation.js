@@ -2,9 +2,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { HomeScreen } from "../screens/HomeScreen"
 import { UserSettingsScreen } from "../screens/UserSettingsScreen"
 import { Icon } from "@rneui/themed"
+import { LoginScreen } from "../screens/LoginScreen"
 
 const Tab = createBottomTabNavigator()
-
+const isSignedIn = true
 export function AppNavigation() {
     return (
         <Tab.Navigator 
@@ -13,9 +14,11 @@ export function AppNavigation() {
                 tabBarInactiveTintColor: "#646464",
                 tabBarIcon: ({color,size}) => screenTabOptions(route,color,size),
             })}
-        >
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Account" component={UserSettingsScreen} />
+        >{
+            isSignedIn ?
+            <><Tab.Screen name="Home" component={HomeScreen} /><Tab.Screen name="Account" component={UserSettingsScreen} /></>
+            : <Tab.Screen name="Login" component={LoginScreen}/>
+        }
         </Tab.Navigator>
     )
 }
@@ -26,7 +29,7 @@ function screenTabOptions (route, color, size) {
     if(!route || !route.name){
         iconName = "build"
     }
-    console.log("route.name:" + route.name)
+    /* console.log("route.name:" + route.name) */
     switch (route.name) {
         case "Home":{
             iconName = "home"
@@ -34,6 +37,10 @@ function screenTabOptions (route, color, size) {
         }
         case "Account":{
             iconName = "account-circle"
+            break;
+        }
+        case "Login":{
+            iconName = "login"
             break;
         }
         default: {
